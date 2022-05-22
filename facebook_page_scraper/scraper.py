@@ -105,6 +105,41 @@ class Facebook_scraper:
 
         return json.dumps(self.__data_dict,ensure_ascii=False)
 
+    # def scrap_to_dict(self):
+    #     # call the __start_driver and override class member __driver to webdriver's instance
+    #     self.__start_driver()
+    #     starting_time = time.time()
+    #     # navigate to URL
+    #     self.__driver.get(self.URL)
+    #
+    #     self.__layout = Finder._Finder__detect_ui(self.__driver)
+    #     # sometimes we get popup that says "your request couldn't be processed", however
+    #     # posts are loading in background if popup is closed, so call this method in case if it pops up.
+    #     Utilities._Utilities__close_error_popup(self.__driver)
+    #     # wait for post to load
+    #     Utilities._Utilities__wait_for_element_to_appear(self.__driver, self.__layout)
+    #     # scroll down to bottom most
+    #     Utilities._Utilities__scroll_down(self.__driver, self.__layout)
+    #     self.__handle_popup(self.__layout)
+    #
+    #     name = Finder._Finder__find_name(self.__driver, self.__layout)  # find name element
+    #
+    #     while len(self.__data_dict) <= self.posts_count:
+    #         self.__handle_popup(self.__layout)
+    #         self.__find_elements(name)
+    #         current_time = time.time()
+    #         if self.__check_timeout(starting_time, current_time) is True:
+    #             print("Timeout...")
+    #             break
+    #         Utilities._Utilities__scroll_down(self.__driver, self.__layout)  # scroll down
+    #         # print(len(self.__data_dict))
+    #     # close the browser window after job is done.
+    #     Utilities._Utilities__close_driver(self.__driver)
+    #     # dict trimming, might happen that we find more posts than it was asked, so just trim it
+    #     self.__data_dict = dict(list(self.__data_dict.items())[0:int(self.posts_count)])
+    #
+    #     return json.dumps(self.__data_dict, ensure_ascii=False)
+
     def __json_to_csv(self,filename,json_data,directory):
 
         os.chdir(directory) #change working directory to given directory
@@ -132,6 +167,18 @@ class Facebook_scraper:
                 writer.writerow(row) #write row to CSV file
 
             data_file.close() #after writing close the file
+
+
+
+    def scrap_to_dict(self):
+        try:
+            data = self.scrap_to_json()   #get the data in JSON format from the same class method
+            return json.loads(data)
+            return True
+        except Exception as ex:
+            print(ex)
+            return False
+
 
     def scrap_to_csv(self,filename,directory = os.getcwd()):
         try:

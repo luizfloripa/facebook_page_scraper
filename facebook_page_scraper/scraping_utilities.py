@@ -13,7 +13,7 @@ class Scraping_utilities:
         e.g => input = '54454 comment', than output => 54454
         """
         try:
-            #return string.split(" ")[0]
+            # return string.split(" ")[0]
             return re.findall("\d+",string)[0]
         except IndexError:
             return 0

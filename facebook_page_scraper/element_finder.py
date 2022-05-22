@@ -92,7 +92,7 @@ class Finder():
               shares = "0"
               for element in elements:
                 text = element.text
-                if "share" in text:
+                if "Share" in text:
                     shares = re.findall("\d+", text)[0]
                     break
             return shares
@@ -123,6 +123,7 @@ class Finder():
     def __find_comments(post,layout):
         """finds comments count of the facebook post using selenium's webdriver's method"""
         try:
+            # print(layout)
             comments = ""
             if layout == "old":
               comments = post.find_element(By.CSS_SELECTOR,"a._3hg-").get_attribute('textContent')
@@ -133,9 +134,11 @@ class Finder():
               comments = "0"
               for element in elements:
                 text = element.text
-                if "comment" in text:
+                # print(text)
+                if "Comments" in text:
                     comments = Scraping_utilities._Scraping_utilities__extract_numbers(
-                        comments)
+                        text)
+                    # print(comments)
         except NoSuchElementException:
             comments = 0
         except Exception as ex:
@@ -249,7 +252,9 @@ class Finder():
         """finds all image of the facebook post using selenium's webdriver's method"""
         try:
             #find all img tag that looks like <img class="scaledImageFitWidth img" src="">
-            images = post.find_elements(By.CSS_SELECTOR,"img.scaledImageFitWidth.img")
+            # images = post.find_elements(By.CSS_SELECTOR,"img.scaledImageFitWidth.img")
+            images = post.find_elements(By.CSS_SELECTOR, "img.datstx6m")
+            # images = post.find_elements(By.TAG_NAME, 'img')
             #extract src attribute from all the img tag,store it in list
             sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
         except NoSuchElementException:
