@@ -17,40 +17,41 @@ class Finder():
     """
     Holds the collections of methods that finds element of the facebook's posts using selenium's webdriver's methods
     """
+
     @staticmethod
     def __get_status_link(link_list):
-      status = ""
-      for link in link_list:
-        link_value = link.get_attribute("href")
-        if "/posts/" in link_value and "/groups/" in link_value:
-            status = link
-            break
-        if "/posts/" in link_value:
-            status = link
-            break
-        if "/videos/pcb" in link_value:
-            status = link
-            break
-        elif "/photos/" in link_value:
-            # print(link_value)
-            status = link
-            break
-        if "fbid=" in link_value:
-            status = link
-            break
-        elif "/group/" in link_value:
-            # print(link_value)
-            status = link
-            break
-        if "/videos/" in link_value:
-            # print(link_value)
-            status = link
-            break
-        elif "/groups/" in link_value:
-            # print(link_value)
-            status = link
-            break
-      return status
+        status = ""
+        for link in link_list:
+            link_value = link.get_attribute("href")
+            if "/posts/" in link_value and "/groups/" in link_value:
+                status = link
+                break
+            if "/posts/" in link_value:
+                status = link
+                break
+            if "/videos/pcb" in link_value:
+                status = link
+                break
+            elif "/photos/" in link_value:
+                # print(link_value)
+                status = link
+                break
+            if "fbid=" in link_value:
+                status = link
+                break
+            elif "/group/" in link_value:
+                # print(link_value)
+                status = link
+                break
+            if "/videos/" in link_value:
+                # print(link_value)
+                status = link
+                break
+            elif "/groups/" in link_value:
+                # print(link_value)
+                status = link
+                break
+        return status
 
     @staticmethod
     def __find_status(post,layout):
@@ -215,8 +216,13 @@ class Finder():
               return datetime.datetime.fromtimestamp(float(posted_time)).isoformat()
             elif layout == "new":
               aria_label_value = link_element.get_attribute("aria-label")
-              timestamp = parse(aria_label_value).isoformat() if len(
-                  aria_label_value) > 5 else Scraping_utilities._Scraping_utilities__convert_to_iso(aria_label_value)
+              if "at" in aria_label_value:
+                  timestamp = parse(aria_label_value).isoformat() if len(
+                      aria_label_value) > 5 else Scraping_utilities._Scraping_utilities__convert_to_iso(aria_label_value)
+              else:
+                  aria_label_value = aria_label_value + " at 0:00 AM"
+                  timestamp = parse(aria_label_value).isoformat() if len(
+                      aria_label_value) > 5 else Scraping_utilities._Scraping_utilities__convert_to_iso(aria_label_value)
               return timestamp
         except dateutil.parser._parser.ParserError:
             timestamp = Scraping_utilities._Scraping_utilities__convert_to_iso(
@@ -256,7 +262,12 @@ class Finder():
             images = post.find_elements(By.CSS_SELECTOR, "img.datstx6m")
             # images = post.find_elements(By.TAG_NAME, 'img')
             #extract src attribute from all the img tag,store it in list
-            sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
+            if len(images) > 0:
+                sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
+            else:
+                images = post.find_elements(By.CSS_SELECTOR, "img.scaledImageFitWidth.img")
+                sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
+
         except NoSuchElementException:
             sources = []
             pass
