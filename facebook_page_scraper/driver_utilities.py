@@ -121,8 +121,9 @@ class Utilities:
 
         except WebDriverException:
             #if it was not found,it means either page is not loading or it does not exists
-            print("No posts were found!")
+            print("No posts were found 1!")
             Utilities.__close_driver(driver)
+            return False
             sys.exit(1)  #exit the program, because if posts does not exists,we cannot go further
         except Exception as ex:
             print("error at wait_for_element_to_appear method : {}".format(ex))
