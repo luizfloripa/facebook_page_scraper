@@ -18,11 +18,11 @@ class Utilities:
     @staticmethod
     def __close_driver(driver):
         """expects driver's instance, closes the driver"""
-        try:
-            driver.close()
-            driver.quit()
-        except Exception as ex:
-            print("error at close_driver method : {}".format(ex))
+        # try:
+        #     driver.close()
+        #     driver.quit()
+        # except Exception as ex:
+        #     print("error at close_driver method : {}".format(ex))
 
     @staticmethod
     def __close_error_popup(driver):

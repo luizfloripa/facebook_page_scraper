@@ -66,7 +66,8 @@ class Finder():
               status = Scraping_utilities._Scraping_utilities__extract_id_from_link(status_link)
             elif layout == "new":
               #links = post.find_elements(By.CSS_SELECTOR,"a[role='link']")
-              link = post.find_element(By.CSS_SELECTOR,'.gpro0wi8.b1v8xokw')
+              # link = post.find_element(By.CSS_SELECTOR,'.gpro0wi8.b1v8xokw')
+              link = post.find_element(By.CSS_SELECTOR, '.jxuftiz4.cxfqmxzd.tes86rjd')
               status_link = link.get_attribute('href')
               status = Scraping_utilities._Scraping_utilities__extract_id_from_link(
                   status_link)
@@ -83,18 +84,23 @@ class Finder():
     @staticmethod
     def __find_share(post,layout):
         """finds shares count of the facebook post using selenium's webdriver's method"""
+        print("Type: " + layout)
         try:
             if layout == "old":
               #aim is to find element that have datatest-id attribute as UFI2SharesCount/root
               shares = post.find_element(By.CSS_SELECTOR,"[data-testid='UFI2SharesCount/root']").get_attribute('textContent')
               shares = Scraping_utilities._Scraping_utilities__extract_numbers(shares)
             elif layout == "new":
-              elements = post.find_elements(By.CSS_SELECTOR,"div.gtad4xkn")
+              elements = post.find_elements(By.CSS_SELECTOR, "div.gtad4xkn")
+              print(post)
+              elements = post.find_elements(By.CSS_SELECTOR, "div.dkzmklf5")
               shares = "0"
               for element in elements:
+                print(element.text)
                 text = element.text
                 if "Share" in text:
-                    shares = re.findall("\d+", text)[0]
+                    shares = text.split()[0]
+                    # shares = re.findall("\d+", text)[0]
                     break
             return shares
         except NoSuchElementException:
@@ -131,14 +137,15 @@ class Finder():
               #extract numbers from text
               comments = Scraping_utilities._Scraping_utilities__extract_numbers(comments)
             elif layout == "new":
-              elements = post.find_elements(By.CSS_SELECTOR,"div.gtad4xkn")
+              elements = post.find_elements(By.CSS_SELECTOR,"div.dkzmklf5")
               comments = "0"
               for element in elements:
                 text = element.text
-                # print(text)
-                if "Comments" in text:
-                    comments = Scraping_utilities._Scraping_utilities__extract_numbers(
-                        text)
+                print(text)
+                if "Comment" in text:
+                    comments = text.split()[0]
+                    # comments = Scraping_utilities._Scraping_utilities__extract_numbers(
+                    #     text.split()[0])
                     # print(comments)
         except NoSuchElementException:
             comments = 0
@@ -259,14 +266,22 @@ class Finder():
         try:
             #find all img tag that looks like <img class="scaledImageFitWidth img" src="">
             # images = post.find_elements(By.CSS_SELECTOR,"img.scaledImageFitWidth.img")
-            images = post.find_elements(By.CSS_SELECTOR, "img.datstx6m")
+            images = post.find_elements(By.CSS_SELECTOR, "img.p9wrh9lq")
             # images = post.find_elements(By.TAG_NAME, 'img')
             #extract src attribute from all the img tag,store it in list
+            #<div class="i85zmo3j z6erz7xo bdao358l alzwoclg on4d8346 jcxyg2ei s8sjc6am myo4itp8 ekq1a7f9"
+            # data-visualcompletion="ignore"><img alt="" class="pytsy3co ncxvlvn8" referrerpolicy="origin-when-cross-origin"
+            # src="https://scontent.ffln6-1.fna.fbcdn.net/v/t15.5256-10/298813062_611675610309072_7590354201326377892_n.jpg?stp=dst-jpg_p180x540&amp;_nc_cat=1&amp;ccb=1-7&amp;_nc_sid=ad6a45&amp;_nc_eui2=AeFjHSx1aqYMnIhU7ricxRGZre7AMKVCWMOt7sAwpUJYw0SctnXWicnT2023NRj1zEGo8KnHbBoPTGr-iXmvTaXL&amp;_nc_ohc=w-nnKTu5i_sAX9-qYk4&amp;_nc_ht=scontent.ffln6-1.fna&amp;oh=00_AT8z2uOrySCrBCbau1pHQquoQR1w63iI_reha01kcN9bqQ&amp;oe=630816F6"></div>
             if len(images) > 0:
                 sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
             else:
-                images = post.find_elements(By.CSS_SELECTOR, "img.scaledImageFitWidth.img")
-                sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
+                images = post.find_elements(By.CSS_SELECTOR, "img.ncxvlvn8")
+
+                if len(images) > 0:
+                    sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
+                else:
+                    images = post.find_elements(By.CSS_SELECTOR, "img.scaledImageFitWidth.img")
+                    sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
 
         except NoSuchElementException:
             sources = []

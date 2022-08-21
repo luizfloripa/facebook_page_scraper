@@ -223,11 +223,18 @@ class Facebook_scraper:
                 status,post_url,link_element = Finder._Finder__find_status(post,self.__layout)
                 #find share from the post
                 shares = Finder._Finder__find_share(post,self.__layout)
+                print("Pre shares converter")
+                print(shares)
                 #converting shares to number
                 #e.g if 5k than it should be 5000
                 shares = int(Scraping_utilities._Scraping_utilities__value_to_float(shares))
+
+                print("POST shares converter")
+                print(shares)
                 #find all reactions
                 reactions_all = Finder._Finder__find_reactions(post)
+                print("REACTION shares")
+                print(reactions_all)
                 #find all anchor tags in reactions_all list
                 all_hrefs_in_react = Finder._Finder__find_reaction(self.__layout,reactions_all,) if type(
                     reactions_all) != str else ""
@@ -238,6 +245,9 @@ class Facebook_scraper:
                     l = [i.get_attribute("aria-label") for i in all_hrefs_in_react]
                 else:
                     l = []
+
+                print(l);
+
                 #extract that aria-label from all_hrefs_in_react list and than extract number from them seperately
                 #if Like aria-label is in the list, than extract it and extract numbers from that text
 
