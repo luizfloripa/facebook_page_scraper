@@ -275,8 +275,7 @@ class Finder():
             if len(images) > 0:
                 sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
             else:
-
-
+                images = post.find_elements(By.CSS_SELECTOR, "img.ncxvlvn8")
                 if len(images) > 0:
                     sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
                 else:
