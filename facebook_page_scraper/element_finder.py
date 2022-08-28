@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import dateparser
+
 try:
     from selenium.common.exceptions import NoSuchElementException
     from .scraping_utilities import Scraping_utilities
@@ -223,14 +225,18 @@ class Finder():
               return datetime.datetime.fromtimestamp(float(posted_time)).isoformat()
             elif layout == "new":
               aria_label_value = link_element.get_attribute("aria-label")
-              if "at" in aria_label_value:
-                  timestamp = parse(aria_label_value).isoformat() if len(
-                      aria_label_value) > 5 else Scraping_utilities._Scraping_utilities__convert_to_iso(aria_label_value)
-              else:
-                  aria_label_value = aria_label_value + " at 0:00 AM"
-                  timestamp = parse(aria_label_value).isoformat() if len(
-                      aria_label_value) > 5 else Scraping_utilities._Scraping_utilities__convert_to_iso(aria_label_value)
+              # print(aria_label_value)
+              timestamp = dateparser.parse(aria_label_value).isoformat()
               return timestamp
+
+              # if "at" in aria_label_value:
+              #     timestamp = parse(aria_label_value).isoformat() if len(
+              #         aria_label_value) > 5 else Scraping_utilities._Scraping_utilities__convert_to_iso(aria_label_value)
+              # else:
+              #     aria_label_value = aria_label_value + " at 0:00 AM"
+              #     timestamp = parse(aria_label_value).isoformat() if len(
+              #         aria_label_value) > 5 else Scraping_utilities._Scraping_utilities__convert_to_iso(aria_label_value)
+              # return timestamp
         except dateutil.parser._parser.ParserError:
             timestamp = Scraping_utilities._Scraping_utilities__convert_to_iso(
                 aria_label_value)
