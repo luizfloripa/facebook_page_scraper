@@ -275,13 +275,18 @@ class Finder():
             if len(images) > 0:
                 sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
             else:
-                images = post.find_elements(By.CSS_SELECTOR, "img.ncxvlvn8")
+
 
                 if len(images) > 0:
                     sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
                 else:
-                    images = post.find_elements(By.CSS_SELECTOR, "img.scaledImageFitWidth.img")
-                    sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
+                    #if multiples images the class is different from single image
+                    images = post.find_elements(By.CSS_SELECTOR, "img.s8sjc6am")
+                    if len(images) > 0:
+                        sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
+                    else:
+                        images = post.find_elements(By.CSS_SELECTOR, "img.scaledImageFitWidth.img")
+                        sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
 
         except NoSuchElementException:
             sources = []
