@@ -69,7 +69,9 @@ class Finder():
             elif layout == "new":
               #links = post.find_elements(By.CSS_SELECTOR,"a[role='link']")
               # link = post.find_element(By.CSS_SELECTOR,'.gpro0wi8.b1v8xokw')
-              link = post.find_element(By.CSS_SELECTOR, '.jxuftiz4.cxfqmxzd.tes86rjd')
+              # link = post.find_element(By.CSS_SELECTOR, '.jxuftiz4.cxfqmxzd.tes86rjd')
+              link = post.find_element(
+                  By.CSS_SELECTOR, 'span > a[aria-label][role="link"]')
               status_link = link.get_attribute('href')
               status = Scraping_utilities._Scraping_utilities__extract_id_from_link(
                   status_link)
