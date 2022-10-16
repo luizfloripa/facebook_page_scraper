@@ -275,6 +275,8 @@ class Finder():
             #find all img tag that looks like <img class="scaledImageFitWidth img" src="">
             # images = post.find_elements(By.CSS_SELECTOR,"img.scaledImageFitWidth.img")
             images = post.find_elements(By.CSS_SELECTOR, "img.p9wrh9lq")
+            images = post.find_elements(
+                By.CSS_SELECTOR, "div > img[referrerpolicy]")
             # images = post.find_elements(By.TAG_NAME, 'img')
             #extract src attribute from all the img tag,store it in list
             #<div class="i85zmo3j z6erz7xo bdao358l alzwoclg on4d8346 jcxyg2ei s8sjc6am myo4itp8 ekq1a7f9"
@@ -283,17 +285,21 @@ class Finder():
             if len(images) > 0:
                 sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
             else:
-                images = post.find_elements(By.CSS_SELECTOR, "img.ncxvlvn8")
+                images = post.find_elements(By.CSS_SELECTOR, "img.p9wrh9lq")
                 if len(images) > 0:
                     sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
                 else:
-                    #if multiples images the class is different from single image
-                    images = post.find_elements(By.CSS_SELECTOR, "img.s8sjc6am")
+                    images = post.find_elements(By.CSS_SELECTOR, "img.ncxvlvn8")
                     if len(images) > 0:
                         sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
                     else:
-                        images = post.find_elements(By.CSS_SELECTOR, "img.scaledImageFitWidth.img")
-                        sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
+                        #if multiples images the class is different from single image
+                        images = post.find_elements(By.CSS_SELECTOR, "img.s8sjc6am")
+                        if len(images) > 0:
+                            sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
+                        else:
+                            images = post.find_elements(By.CSS_SELECTOR, "img.scaledImageFitWidth.img")
+                            sources = [image.get_attribute("src") for image in images] if len(images) > 0 else []
 
         except NoSuchElementException:
             sources = []
